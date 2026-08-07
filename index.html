@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boné & Moda Lacoste - Edição Premium</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* VARIABLES (Light Mode por padrão) */
+    :root {
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #212529;
+      --text-muted: #6c757d;
+      --primary-color: #004d25; /* Verde Lacoste */
+      --accent-color: #002e16;
+      --border-color: #e9ecef;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --btn-text: #ffffff;
+    }
+
+    /* Modificador Dark Mode */
+    body.dark-mode {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f8f9fa;
+      --text-muted: #a0a0a0;
+      --primary-color: #00a859;
+      --accent-color: #00d672;
+      --border-color: #2d2d2d;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      --btn-text: #121212;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 8%;
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-toggle-btn {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle-btn:hover {
+      background-color: var(--primary-color);
+      color: var(--btn-text);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .hero-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Galeria de Fotos (6 Imagens) */
+    .gallery-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background-color: var(--card-bg);
+      aspect-ratio: 1;
+      border: 1px solid var(--border-color);
+    }
+
+    .gallery-container:not(.four-items) .gallery-item:first-child {
+      grid-column: span 3;
+      aspect-ratio: 16/9;
+    }
+
+    /* Ajuste para a galeria de 4 itens */
+    .gallery-container.four-items {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gallery-container.four-items .gallery-item {
+      aspect-ratio: 1;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Detalhes do Produto */
+    .product-details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .tag {
+      align-self: flex-start;
+      background-color: var(--primary-color);
+      color: var(--btn-text);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    .product-title {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .price-box {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .old-price {
+      font-size: 1.2rem;
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .product-description {
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-bottom: 30px;
+    }
+
+    .features-list li {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .features-list i {
+      color: var(--primary-color);
+    }
+
+    /* Botão WhatsApp */
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background-color: #25D366;
+      color: #ffffff;
+      padding: 16px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .whatsapp-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+    }
+
+    /* Seção do Gráfico */
+    .analytics-section {
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      margin-top: 40px;
+    }
+
+    .analytics-section h2 {
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      color: var(--text-color);
+    }
+
+    /* Divisor de Seções */
+    .section-divider {
+      border: 0;
+      height: 1px;
+      background: var(--border-color);
+      margin: 60px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <i class="fa-solid fa-gem"></i> LACOSTE
+    </div>
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">
+      <i class="fa-solid fa-moon"></i> Modo Escuro
+    </button>
+  </header>
+
+  <div class="container">
+    
+    <div class="hero-section">
+      
+      <div class="gallery-container">
+        <div class="gallery-item">
+          <img src="download.jpg" alt="Boné Lacoste Frontal">
+        </div>
+        <div class="gallery-item">
+          <img src="@uff_store_ofc_ 📲.jpg" alt="Boné Lacoste Lateral">
+        </div>
+        <div class="gallery-item">
+          <img src="Boné letreiro.jpg" alt="Boné Lacoste Traseira">
+        </div>
+        <div class="gallery-item">
+          <img src="lacoste sport.jpg" alt="Detalhe Logotipo">
+        </div>
+        <div class="gallery-item">
+          <img src="2 faixa lacoste.jpg" alt="Detalhe do Fecho">
+        </div>
+        <div class="gallery-item">
+          <img src="Primeiro Sport ori não se esquece.jpg" alt="Boné em Uso">
+        </div>
+      </div>
+
+      <div class="product-details">
+        <span class="tag">Original & Premium</span>
+        <h1 class="product-title">Boné Lacoste Gabardina de Algodão</h1>
+        
+        <div class="price-box">
+          <span>R$ 190,00</span>
+          <span class="old-price">R$ 230,00</span>
+        </div>
+
+        <p class="product-description">
+          O clássico boné Lacoste une estilo esportivo, elegância e máximo conforto. Feito em algodão de alta qualidade com acabamento impecável, traz o icônico crocodilo bordado na lateral, ideal para completar qualquer visual com sofisticação.
+        </p>
+
+        <ul class="features-list">
+          <li><i class="fa-solid fa-check"></i> <strong>Tecido:</strong> 100% Algodão Premium (Gabardina)</li>
+          <li><i class="fa-solid fa-check"></i> <strong>Ajuste:</strong> Correia ajustável na parte traseira</li>
+          <li><i class="fa-solid fa-check"></i> <strong>Detalhes:</strong> Ilhós respiráveis e bordado lateral do crocodilo</li>
+          <li><i class="fa-solid fa-check"></i> <strong>Tamanho:</strong> Único (Ajustável)</li>
+        </ul>
+
+        <a href="https://wa.me/8981285602?text=Ol%C3%A1!%20Tenho%20interesse%20no%20Bon%C3%A9%20Lacoste." target="_blank" class="whatsapp-btn">
+          <i class="fa-brands fa-whatsapp"></i> Comprar no WhatsApp
+        </a>
+      </div>
+
+    </div>
+
+    <hr class="section-divider">
+
+    <div class="hero-section">
+      
+      <div class="gallery-container">
+        <div class="gallery-item">
+          <img src="Polo Streetwear Malokas BRL_ Ⓜ️.jpg" alt="Camisa Polo Lacoste Frontal">
+        </div>
+        <div class="gallery-item">
+          <img src="download (4).jpg" alt="Camisa Polo Lacoste Costas">
+        </div>
+        <div class="gallery-item">
+          <img src="download (3).jpg" alt="Detalhe da Gola">
+        </div>
+        <div class="gallery-item">
+          <img src="download (2).jpg" alt="Bordado do Crocodilo">
+        </div>
+        <div class="gallery-item">
+          <img src="download (1).jpg" alt="Detalhe da Manga">
+        </div>
+        <div class="gallery-item">
+          <img src="c:\Users\Cliente\Downloads\Scarface polo shirt.jpg" alt="Camisa Polo em Uso">
+        </div>
+      </div>
+
+      <div class="product-details">
+        <span class="tag">Coleção Exclusiva</span>
+        <h1 class="product-title">Camisa Polo Lacoste Classic Fit</h1>
+        
+        <div class="price-box">
+          <span>R$ 230,00</span>
+          <span class="old-price">R$ 299,99</span>
+        </div>
+
+        <p class="product-description">
+          A lendária Camisa Polo Lacoste em tecido Petit Piqué traz o autêntico corte clássico e atemporal. Combinando elegância natural e alta durabilidade, possui os botões de madrepérola originais e o emblemático crocodilo verde bordado no peito.
+        </p>
+
+        <ul class="features-list">
+          <li><i class="fa-solid fa-check"></i> <strong>Material:</strong> 100% Algodão Petit Piqué Respirável</li>
+          <li><i class="fa-solid fa-check"></i> <strong>Corte:</strong> Classic Fit (Modelagem tradicional e confortável)</li>
+          <li><i class="fa-solid fa-check"></i> <strong>Acabamento:</strong> Botões em madrepérola e gola reforçada</li>
+          <li><i class="fa-solid fa-check"></i> <strong>Tamanhos Disponíveis:</strong> P, M, G, GG e XGG</li>
+        </ul>
+
+        <a href="https://wa.me/8981285602?text=Ol%C3%A1!%20Tenho%20interesse%20na%20Camisa%20Polo%20Lacoste." target="_blank" class="whatsapp-btn">
+          <i class="fa-brands fa-whatsapp"></i> Comprar no WhatsApp
+        </a>
+      </div>
+
+    </div>
+
+    <hr class="section-divider">
+
+    <div class="hero-section">
+      
+      <div class="gallery-container four-items">
+        <div class="gallery-item">
+          <img src="download (6).jpg" alt="Tênis Lacoste Vista Lateral">
+        </div>
+        <div class="gallery-item">
+          <img src="download (5).jpg"Tênis Lacoste Vista Superior">
+        </div>
+        <div class="gallery-item">
+          <img src="NEW DROP NIKE SHOX _ TN _ REPOSIÇÃO 34 AO 45 VERIFICAR DISPONIBILIDADE 🫡.jpg" alt="Detalhe do Solado e Logo">
+        </div>
+        <div class="gallery-item">
+          <img src="nike initiators.jpg" alt="Tênis Lacoste em Uso">
+        </div>
+      </div>
+
+      <div class="product-details">
+        <span class="tag">Lançamento Premium</span>
+        <h1 class="product-title">Tênis Lacoste Carnaby Pro em Couro</h1>
+        
+        <div class="price-box">
+          <span>R$ 289,99</span>
+          <span class="old-price">R$ 339.99</span>
+        </div>
+
+        <p class="product-description">
+          O Tênis Lacoste Carnaby Pro é a união perfeita entre a tradição das quadras de tênis e o estilo urbano moderno. Confeccionado em couro legítimo de altíssima qualidade, oferece extremo conforto, durabilidade e o clássico crocodilo aplicado na lateral.
+        </p>
+
+        <ul class="features-list">
+          <li><i class="fa-solid fa-check"></i> <strong>Cabedal:</strong> 100% Couro Legítimo</li>
+          <li><i class="fa-solid fa-check"></i> <strong>Solado:</strong> Borracha antiderrapante de alta aderência</li>
+          <li><i class="fa-solid fa-check"></i> <strong>Palmilha:</strong> OrthoLite para amortecimento e respirabilidade</li>
+          <li><i class="fa-solid fa-check"></i> <strong>Tamanhos Disponíveis:</strong> 38 ao 43</li>
+        </ul>
+
+        <a href="https://wa.me/8981285602?text=Ol%C3%A1!%20Tenho%20interesse%20no%20T%C3%AAnis%20Lacoste." target="_blank" class="whatsapp-btn">
+          <i class="fa-brands fa-whatsapp"></i> Comprar no WhatsApp
+        </a>
+      </div>
+
+    </div>
+
+    <div class="analytics-section">
+      <h2><i class="fa-solid fa-chart-line"></i> Desempenho de Vendas do Modelo</h2>
+      <canvas id="salesChart" width="400" height="150"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // Alternar Modo Claro / Modo Escuro
+    function toggleTheme() {
+      const body = document.body;
+      const themeBtn = document.getElementById('themeBtn');
+      
+      body.classList.toggle('dark-mode');
+
+      if (body.classList.contains('dark-mode')) {
+        themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i> Modo Claro';
+        updateChartColors('#ffffff', '#a0a0a0', '#2d2d2d');
+      } else {
+        themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i> Modo Escuro';
+        updateChartColors('#212529', '#6c757d', '#e9ecef');
+      }
+    }
+
+    // Configuração do Gráfico de Vendas (Chart.js)
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    let salesChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+        datasets: [{
+          label: 'Vendas Mensais (Unidades)',
+          data: [120, 190, 300, 250, 420, 550],
+          borderColor: '#00a859',
+          backgroundColor: 'rgba(0, 168, 89, 0.1)',
+          fill: true,
+          tension: 0.4,
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: '#212529' }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: '#e9ecef' },
+            ticks: { color: '#212529' }
+          },
+          y: {
+            grid: { color: '#e9ecef' },
+            ticks: { color: '#212529' }
+          }
+        }
+      }
+    });
+
+    // Função para adaptar as cores do gráfico ao trocar o tema
+    function updateChartColors(textColor, mutedColor, gridColor) {
+      salesChart.options.plugins.legend.labels.color = textColor;
+      salesChart.options.scales.x.ticks.color = mutedColor;
+      salesChart.options.scales.x.grid.color = gridColor;
+      salesChart.options.scales.y.ticks.color = mutedColor;
+      salesChart.options.scales.y.grid.color = gridColor;
+      salesChart.update();
+    }
+  </script>
+</body>
+</html>
